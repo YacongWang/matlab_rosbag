@@ -9,6 +9,13 @@ You need to install each of these things in order.  First, make the workspace:
 
     mkdir ~/matbag_ws && cd ~/matbag_ws
 
+### CMake
+If you are using OSX, go to the [Homebrew](http://brew.sh) website and follow the instructions to install.  Then, install CMake and empy:
+
+    brew update
+    brew install cmake eigen pkg-config
+    pip install empy
+
 ### [Boost](http://www.boost.org/users/download/)
 Download and unpack the latest version of Boost and go to that directory.
 
@@ -30,9 +37,13 @@ Install [rosinstall_generator](http://wiki.ros.org/rosinstall_generator#Installa
 
 Generate install file and download necessary packages
 
+    cd ~/matbag_ws/
     rosinstall_generator --rosdistro hydro rosbag_storage tf2 --deps --wet-only --tar > matbag.rosinstall
     wstool init -j8 src matbag.rosinstall
     git clone -b hydro-devel https://github.com/bcharrow/matlab_rosbag.git src/matlab_rosbag
+    sudo pip install rosdep
+    sudo rosdep init
+    rosdep update
     rosdep install --from-paths src --ignore-src --rosdistro hydro -y
 
 Next we need to compile.  Set ROSCONSOLE_SEVERITY_NONE, so we don't need to build log4cxx or any of its dependencies and use the downloaded version of boost and bz2 as opposed to the system's version.
@@ -44,10 +55,10 @@ Next we need to compile.  Set ROSCONSOLE_SEVERITY_NONE, so we don't need to buil
       -DBoost_NO_SYSTEM_PATHS=ON \
       -DBOOST_ROOT=$(pwd)/install \
       -DBZIP2_INCLUDE_DIR=~/matbag_ws/install/include/ \
-      -DBZIP2_LIBRARIES=~/matbag_ws/install/lib/libbz2a
+      -DBZIP2_LIBRARIES=~/matbag_ws/install/lib/libbz2.a
 
 ### matlab_rosbag
-Now use the <tt>mex_compile.sh</tt> build script
+Now use the <tt>mex_compile.sh</tt> build script:
 
     cd ~/matbag_ws/src/matlab_rosbag/src
     bash mex_compile.sh
