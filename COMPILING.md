@@ -14,7 +14,7 @@ If you are using OSX, go to the [Homebrew](http://brew.sh) website and follow th
 
     brew update
     brew install cmake eigen pkg-config
-    pip install empy
+    sudo pip install empy
 
 ### [Boost](http://www.boost.org/users/download/)
 Download and unpack the latest version of Boost and go to that directory.
